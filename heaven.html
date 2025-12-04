@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heaven Deco Studio</title>
+  <!-- 화이트 모드 스타일 연결 -->
+  <link rel="stylesheet" href="./heaven.css" />
+  <style id="skin-overrides">
+    @font-face{font-family:'Darling';src:url('./assets/heaven/fonts/Darling.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'CAMPUS_PERSONAL_USE';src:url('./assets/heaven/fonts/CAMPUS_PERSONAL_USE.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'mieszkanie9';src:url('./assets/heaven/fonts/mieszkanie9.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'White_On_Black';src:url('./assets/heaven/fonts/White_On_Black.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'built_titling_el_it';src:url('./assets/heaven/fonts/built_titling_el_it.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'AngelicWar';src:url('./assets/heaven/fonts/AngelicWar.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'HawaiiLover';src:url('./assets/heaven/fonts/HawaiiLover.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'Gothik_Steel';src:url('./assets/heaven/fonts/Gothik_Steel.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'GunerGraffiti-Extrude';src:url('./assets/heaven/fonts/GunerGraffiti-Extrude.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'gomarice_bat_men';src:url('./assets/heaven/fonts/gomarice_bat_men.woff2') format('woff2');font-display:swap}
+    :root{--stage-w:1440px;--stage-h:860px;--canvas-w:1400px;--canvas-h:800px}
+    .dock{width:var(--stage-w)}
+  </style>
+  
+  <script src="https://cdn.jsdelivr.net/gh/buzzfeed/libgif-js@master/libgif.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+
+  <script src="./heaven.js" defer></script>
+  <link rel="icon" href="data:," />
+</head>
+<body>
+  <!-- HEADER -->
+  <header id="appHeader" class="hdr" role="banner" aria-label="Application header">
+    <div class="hdr__inner">
+      <!-- 로고 클릭 시 index.html로 이동 -->
+      <a href="index.html" class="logo-link" aria-label="Typo Deco Studio">
+        <img src="logo.png" alt="Typo Deco Studio Logo" />
+      </a>
+      
+      <button id="soundToggle" class="btn btn--toggle" type="button" aria-pressed="true" aria-label="Toggle sound">Sound On</button>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main id="app" class="layout" role="main">
+    <!-- LEFT: WORKSTATION -->
+    <section class="work" aria-label="Design stage">
+      <div class="stage" id="stage" role="region" aria-label="Canvas frame">
+        <canvas id="mainCanvas" width="1400" height="800" aria-label="Design canvas"></canvas>
+        <div id="processingIndicator" class="processing-overlay" style="display: none;">
+          <div class="spinner"></div>
+          <div class="processing-text">Generating GIF...</div>
+        </div>
+        <div id="stageOverlay" aria-hidden="true"></div>
+      </div>
+
+      <!-- BOTTOM DOCK -->
+      <div class="dock" role="region" aria-label="Sticker dock">
+        <div class="dock__left">
+          <button id="btnReset" class="btn btn--secondary" type="button">Reset</button>
+        </div>
+
+        <ul id="stickerDock" class="dock__list" role="list" aria-label="Stickers">
+          <!-- JS Generated -->
+        </ul>
+
+        <div class="dock__right">
+          <button id="btnDownload" class="btn btn--primary" type="button" aria-label="Download Image">⬇ Download</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: CONTROL PANEL -->
+    <aside class="panel" id="controlPanel" aria-label="Control panel">
+      <div class="utility-icons">
+        <button id="btnRandom" class="btn btn--icon" type="button" title="Random Style" aria-label="Random Style">
+          <!-- 경로 수정: heaven -->
+          <img src="./assets/heaven/ui/random.png" alt="Random Style" />
+        </button>
+        <button id="btnClearSel" class="btn btn--icon" type="button" title="Full Reset" aria-label="Full Reset">
+          <!-- 경로 수정: heaven -->
+          <img src="./assets/heaven/ui/reset.png" alt="Full Reset" />
+        </button>
+      </div>
+      
+      <!-- TEXT -->
+      <section class="panSec panText" aria-label="Text input">
+        <div class="panText__hd-utility">
+          <header class="panSec__hd">Text</header>
+          <div class="utility-icons"></div>
+        </div>
+        <div class="panSec__bd">
+          <label class="visually-hidden" for="textInput">Input text</label>
+          <textarea id="textInput" rows="3" maxlength="30" placeholder="Writing text" autocomplete="off"></textarea>
+          <div class="meta" id="textCount" aria-live="polite">0 / 30</div>
+        </div>
+      </section>
+
+      <!-- FONT -->
+      <section class="panSec panFont" aria-label="Font selection">
+        <header class="panSec__hd">Font (10)</header>
+        <div id="fontGrid" class="grid grid--font" role="group" aria-label="Font grid">
+          <button class="fontBtn" data-font="Darling">Darling</button>
+          <button class="fontBtn" data-font="CAMPUS_PERSONAL_USE">CAMPUS PERSONAL USE</button>
+          <button class="fontBtn" data-font="mieszkanie9">mieszkanie9</button>
+          <button class="fontBtn" data-font="White_On_Black">White On Black</button>
+          <button class="fontBtn" data-font="built_titling_el_it">built titling el it</button>
+          <button class="fontBtn" data-font="AngelicWar">AngelicWar</button>
+          <button class="fontBtn" data-font="HawaiiLover">HawaiiLover</button>
+          <button class="fontBtn" data-font="Gothik_Steel">Gothik Steel</button>
+          <button class="fontBtn" data-font="GunerGraffiti-Extrude">GunerGraffiti-Extrude</button>
+          <button class="fontBtn" data-font="gomarice_bat_men">gomarice_bat_men</button>
+        </div>
+      </section>
+
+      <!-- ADJUST -->
+      <section class="panSec panAdjust" aria-label="Adjust typography">
+        <header class="panSec__hd">Adjust</header>
+        <div class="panSec__bd form">
+          <label for="sizeRange">Size</label>
+          <input id="sizeRange" type="range" min="24" max="300" value="120" step="1" />
+
+          <label for="rotateRange">Rotate</label>
+          <input id="rotateRange" type="range" min="-180" max="180" value="0" step="1" />
+
+          <label for="outlineRange">Outline</label>
+          <input id="outlineRange" type="range" min="0" max="50" value="6" step="1" />
+
+          <!-- Shadow Toggle -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 4px;">
+              <span class="panSubHd" style="padding:0; margin:0;">Shadow</span>
+              <button id="shadowToggle" class="btn btn--target-toggle" type="button" aria-pressed="true" title="Toggle Shadow">
+                ON
+              </button>
+          </div>
+          <hr style="border-top:1px solid rgba(0,0,0,.1);margin:4px 0 6px;" aria-hidden="true"/>
+
+          <label for="shadowXRange">Shadow X</label>
+          <input id="shadowXRange" type="range" min="-30" max="30" value="4" step="1" />
+          
+          <label for="shadowYRange">Shadow Y</label>
+          <input id="shadowYRange" type="range" min="-30" max="30" value="4" step="1" />
+
+          <label for="shadowBlurRange">Shadow Blur</label>
+          <input id="shadowBlurRange" type="range" min="0" max="30" value="8" step="1" />
+        </div>
+      </section>
+
+      <!-- COLOR -->
+      <section class="panSec panColor" aria-label="Color picker">
+        <header class="panSec__hd panSec__hd--with-toggle">
+          <span>Color</span>
+          <button id="colorTargetToggle" class="btn btn--target-toggle" type="button" aria-pressed="false" title="Toggle Target (Fill/Outline)">
+            Fill
+          </button>
+        </header>
+        <div class="panSec__bd">
+          <input id="colorPicker" type="color" value="#ff1493" aria-label="Pick a color" />
+          <div class="colorHistory" id="colorHistory" aria-label="Recent colors" role="group"></div>
+        </div>
+      </section>
+
+      <!-- PATTERN -->
+      <section class="panSec panPattern" aria-label="Pattern fill">
+        <header class="panSec__hd panSec__hd--with-toggle">
+          <span>Pattern</span>
+          <button id="patternTargetToggle" class="btn btn--target-toggle" type="button" aria-pressed="false" title="Toggle Target (Fill/Outline)">
+            Fill
+          </button>
+        </header>
+        <div id="patternGrid" class="grid grid--pattern" role="group" aria-label="Pattern grid">
+          <button class="patBtn" data-pattern="pattern1.gif" aria-label="Pattern 1"></button>
+          <button class="patBtn" data-pattern="pattern2.png" aria-label="Pattern 2"></button>
+          <button class="patBtn" data-pattern="pattern3.png" aria-label="Pattern 3"></button>
+          <button class="patBtn" data-pattern="pattern4.png" aria-label="Pattern 4"></button>
+          <button class="patBtn" data-pattern="pattern5.png" aria-label="Pattern 5"></button>
+          <button class="patBtn" data-pattern="pattern6.png" aria-label="Pattern 6"></button>
+          <button class="patBtn" data-pattern="pattern7.png" aria-label="Pattern 7"></button>
+          <button class="patBtn" data-pattern="pattern8.gif" aria-label="Pattern 8"></button>
+        </div>
+      </section>
+
+      <!-- EFFECT -->
+      <section class="panSec panEffect" aria-label="Effect overlay">
+        <header class="panSec__hd">Effect</header>
+        <div id="effectGrid" class="grid grid--effect" role="group" aria-label="Effect options">
+          <button class="effectBtn" data-effect="none">None</button>
+          <button class="effectBtn" data-effect="glitter">Glitter</button>
+          <button class="effectBtn" data-effect="bold">Bold</button>
+          <button class="effectBtn" data-effect="metal">Metal</button>
+        </div>
+      </section>
+
+      <!-- BACKGROUND -->
+      <section class="panSec panBg" aria-label="Background">
+        <header class="panSec__hd">Background</header>
+        <div class="panSec__bd form">
+          <div class="radioRow">
+            <input type="radio" id="bgTransparent" name="bgMode" value="transparent" checked />
+            <label for="bgTransparent">Transparent</label>
+          </div>
+          <div class="radioRow">
+            <input type="radio" id="bgSolid" name="bgMode" value="solid" />
+            <label for="bgSolid">Solid</label>
+            <input id="bgColor" type="color" value="#FFFFFF" aria-label="Background color" disabled />
+          </div>
+          <div class="radioRow">
+            <input type="radio" id="bgImage" name="bgMode" value="image" />
+            <label for="bgImage">Upload</label>
+            <input id="bgFile" type="file" accept="image/*" aria-label="Upload background image" disabled />
+          </div>
+        </div>
+      </section>
+    </aside>
+  </main>
+  
+  <div id="downloadModal" class="modal-overlay">
+    <div class="modal-box">
+      <button id="closeModal" class="modal-close" aria-label="Close modal">&times;</button>
+      <header class="modal-header">Save As</header>
+      <div class="modal-body">
+        <button id="btnSavePng" class="modal-btn" type="button">
+          <span>PNG</span>
+          <small>Image (Static)</small>
+        </button>
+        <button id="btnSaveGif" class="modal-btn" type="button">
+          <span>GIF</span>
+          <small>Animation</small>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="clickAudio" preload="auto">
+    <!-- 경로 수정: heaven -->
+    <source src="./assets/heaven/sounds/click1.mp3" type="audio/mpeg" />
+  </audio>
+
+  <noscript>Enable JavaScript to use this app.</noscript>
+</body>
+</html>
