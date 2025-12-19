@@ -1,9 +1,8 @@
 /* =====================================================
-   Typo Deco Studio — App (v12.3: Fix Initial Font Load)
-   - FIXED: Font not applying on initial load.
-     * Added document.fonts.load() check in init().
-     * Forces a re-layout and re-render once the default font ('Darling') is fully loaded.
-   - Previous fixes (GIF loader, Bold effect, etc.) retained.
+   Typo Deco Studio — App (v12.4: Font List Update)
+   - UPDATED: Font List
+     * Removed: GunerGraffiti-Extrude, gomarice_bat_men
+     * Added: 1_punk, Freakshow
    ===================================================== */
 
 // ---------- DOM refs ----------
@@ -117,7 +116,7 @@ const stickerPacks = [
 
 const FONT_LIST = [
   'Darling','CAMPUS_PERSONAL_USE','mieszkanie9','White_On_Black','built_titling_el_it','AngelicWar','HawaiiLover',
-  'Gothik_Steel','GunerGraffiti-Extrude','gomarice_bat_men'
+  'Gothik_Steel','1_punk','Freakshow'
 ];
 
 // ---------- Core Functions ----------

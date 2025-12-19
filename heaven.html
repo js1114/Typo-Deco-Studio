@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Heaven Deco Studio</title>
-  <!-- 화이트 모드 스타일 연결 -->
   <link rel="stylesheet" href="./heaven.css" />
   <style id="skin-overrides">
     @font-face{font-family:'Darling';src:url('./assets/heaven/fonts/Darling.woff2') format('woff2');font-display:swap}
@@ -15,7 +14,7 @@
     @font-face{font-family:'AngelicWar';src:url('./assets/heaven/fonts/AngelicWar.woff2') format('woff2');font-display:swap}
     @font-face{font-family:'HawaiiLover';src:url('./assets/heaven/fonts/HawaiiLover.woff2') format('woff2');font-display:swap}
     @font-face{font-family:'Gothik_Steel';src:url('./assets/heaven/fonts/Gothik_Steel.woff2') format('woff2');font-display:swap}
-    @font-face{font-family:'GunerGraffiti-Extrude';src:url('./assets/heaven/fonts/GunerGraffiti-Extrude.woff2') format('woff2');font-display:swap}
+    @font-face{font-family:'WordsTakenDemo';src:url('./assets/heaven/fonts/WordsTakenDemo.woff2') format('woff2');font-display:swap}
     @font-face{font-family:'gomarice_bat_men';src:url('./assets/heaven/fonts/gomarice_bat_men.woff2') format('woff2');font-display:swap}
     :root{--stage-w:1440px;--stage-h:860px;--canvas-w:1400px;--canvas-h:800px}
     .dock{width:var(--stage-w)}
@@ -31,7 +30,6 @@
   <!-- HEADER -->
   <header id="appHeader" class="hdr" role="banner" aria-label="Application header">
     <div class="hdr__inner">
-      <!-- 로고 클릭 시 index.html로 이동 -->
       <a href="index.html" class="logo-link" aria-label="Typo Deco Studio">
         <img src="logo.png" alt="Typo Deco Studio Logo" />
       </a>
@@ -73,11 +71,9 @@
     <aside class="panel" id="controlPanel" aria-label="Control panel">
       <div class="utility-icons">
         <button id="btnRandom" class="btn btn--icon" type="button" title="Random Style" aria-label="Random Style">
-          <!-- 경로 수정: heaven -->
           <img src="./assets/heaven/ui/random.png" alt="Random Style" />
         </button>
         <button id="btnClearSel" class="btn btn--icon" type="button" title="Full Reset" aria-label="Full Reset">
-          <!-- 경로 수정: heaven -->
           <img src="./assets/heaven/ui/reset.png" alt="Full Reset" />
         </button>
       </div>
@@ -107,7 +103,7 @@
           <button class="fontBtn" data-font="AngelicWar">AngelicWar</button>
           <button class="fontBtn" data-font="HawaiiLover">HawaiiLover</button>
           <button class="fontBtn" data-font="Gothik_Steel">Gothik Steel</button>
-          <button class="fontBtn" data-font="GunerGraffiti-Extrude">GunerGraffiti-Extrude</button>
+          <button class="fontBtn" data-font="WordsTakenDemo">WordsTakenDemo</button>
           <button class="fontBtn" data-font="gomarice_bat_men">gomarice_bat_men</button>
         </div>
       </section>
@@ -185,7 +181,8 @@
         <div id="effectGrid" class="grid grid--effect" role="group" aria-label="Effect options">
           <button class="effectBtn" data-effect="none">None</button>
           <button class="effectBtn" data-effect="glitter">Glitter</button>
-          <button class="effectBtn" data-effect="bold">Bold</button>
+          <!-- Bold Replaced with Mosaic -->
+          <button class="effectBtn" data-effect="mosaic">Mosaic</button>
           <button class="effectBtn" data-effect="metal">Metal</button>
         </div>
       </section>
@@ -231,8 +228,7 @@
   </div>
 
   <audio id="clickAudio" preload="auto">
-    <!-- 경로 수정: heaven -->
-    <source src="./assets/heaven/sounds/click1.mp3" type="audio/mpeg" />
+    <source src="./assets/heaven/sticker.mp3" type="audio/mpeg" />
   </audio>
 
   <noscript>Enable JavaScript to use this app.</noscript>

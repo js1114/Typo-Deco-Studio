@@ -1,6 +1,6 @@
 /* =============================================
    Heaven Deco Studio — White/Silver UI Skin
-   (Structure preserved, Colors inverted to Light Mode, Paths Updated to Heaven)
+   (Restored cleaner UI, applied Shiny Metal effect ONLY to Buttons)
    ============================================= */
 
 /* Fonts - Updated Paths to assets/heaven/fonts/ */
@@ -12,10 +12,11 @@
 @font-face{font-family:'AngelicWar';src:url('./assets/heaven/fonts/AngelicWar.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'HawaiiLover';src:url('./assets/heaven/fonts/HawaiiLover.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'Gothik_Steel';src:url('./assets/heaven/fonts/Gothik_Steel.woff2') format('woff2');font-display:swap}
-@font-face{font-family:'GunerGraffiti-Extrude';src:url('./assets/heaven/fonts/GunerGraffiti-Extrude.woff2') format('woff2');font-display:swap}
+/* Font Changed: GunerGraffiti -> WordsTakenDemo */
+@font-face{font-family:'WordsTakenDemo';src:url('./assets/heaven/fonts/WordsTakenDemo.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'gomarice_bat_men';src:url('./assets/heaven/fonts/gomarice_bat_men.woff2') format('woff2');font-display:swap}
 
-/* Root tokens - White Mode Colors */
+/* Root tokens - Clean White Mode */
 :root{
   --col-black:#000000;
   --col-hotpink:#FF1493;
@@ -53,7 +54,11 @@ body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   color:var(--text);
-  background:var(--ui-bg);
+  
+  background: url('./assets/heaven/bg.png') no-repeat center center fixed;
+  background-size: cover; 
+  background-color: var(--ui-bg); 
+  
   zoom: 0.75;
 }
 img{display:block;max-width:100%}
@@ -63,7 +68,7 @@ button,input,select{font:inherit}
 .visually-hidden{position:absolute;width:1px;height:1px;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;border:0;padding:0;margin:-1px}
 .meta{font-size:12px;opacity:.85;margin-top:6px}
 
-/* Header - White */
+/* Header - Clean White */
 .hdr{position:sticky;top:0;z-index:10;padding:12px 16px;background:
   linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8) 40%),
   #FFFFFF;
@@ -98,7 +103,7 @@ button,input,select{font:inherit}
 }
 .work{flex:1;display:flex;flex-direction:column;gap:12px;align-items:center}
 
-/* Panel - White Silver */
+/* Panel - Clean Silver/White (No excessive glow) */
 .panel{
   width:var(--panel-w);
   overflow:auto;
@@ -113,7 +118,7 @@ button,input,select{font:inherit}
   flex-direction: column;
 }
 
-/* Stage - Light Frame */
+/* Stage - Clean Frame */
 .stage{position:relative;width:var(--stage-w);height:var(--stage-h);padding:20px;border-radius:16px;
   background:
     linear-gradient(180deg,var(--col-chrome-lo),var(--col-chrome-mid) 18%,var(--col-chrome-hi) 50%,var(--col-chrome-mid) 82%,var(--col-chrome-lo)),
@@ -170,7 +175,7 @@ button,input,select{font:inherit}
   letter-spacing: 1px;
 }
 
-/* Download Modal - White */
+/* Download Modal */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -305,7 +310,7 @@ button,input,select{font:inherit}
 .thumb::after,.patBtn::after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
 .thumb:focus-visible,.patBtn:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px;box-shadow:0 0 0 2px #fff,inset 0 0 0 1px rgba(255,255,255,.5)}
 
-/* Sticker Arrow Buttons (Light Metal) */
+/* Sticker Arrow Buttons */
 .sticker-arrow {
   position: absolute;
   left: 50%;
@@ -349,27 +354,47 @@ button,input,select{font:inherit}
 }
 .sticker-arrow.down::before { clip-path: polygon(0% 0%, 100% 0%, 50% 100%); }
 
-/* Buttons - Light Metal */
-.btn{height:48px;line-height:46px;padding:0 20px;border-radius:12px;border:2px solid #B0B0B0;color:#333;background:
-  linear-gradient(180deg,var(--col-chrome-hi),var(--col-chrome-mid) 45%,var(--col-chrome-lo) 60%,var(--col-chrome-mid) 85%,var(--col-chrome-hi));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 6px 14px rgba(0,0,0,.1);
+/* Buttons - Shiny/Glossy White Metal 
+   ONLY buttons get the extra glow and contrast
+*/
+.btn{height:48px;line-height:46px;padding:0 20px;border-radius:12px;border:2px solid #D0D0D0;color:#333;
+  /* High contrast glossy white gradient */
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 45%, #E0E0E0 50%, #F5F5F5 100%);
+  box-shadow: 0 0 15px rgba(255,255,255,0.7), inset 0 1px 0 rgba(255,255,255,1);
   text-transform:uppercase;letter-spacing:1px;cursor:pointer;user-select:none;transition:.14s cubic-bezier(.2,.8,.2,1), transform .14s;}
-.btn:hover{filter:brightness(1.03);}
-.btn:active{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 2px 6px rgba(0,0,0,.1);}
+.btn:hover{
+  filter: brightness(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.9), inset 0 1px 0 rgba(255,255,255,1);
+}
+.btn:active{transform:translateY(2px);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);}
 .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
-.btn:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px;box-shadow:0 0 0 2px #fff,inset 0 1px 0 rgba(255,255,255,.5)}
+.btn:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px;box-shadow:0 0 0 3px #fff}
 
-/* Primary (hot pink) */
-.btn--primary{background:
-  linear-gradient(180deg,#FF7AC1 0%, var(--col-hotpink) 55%, #C40073 100%);
-  border-color:#C00060;box-shadow:0 0 18px rgba(255,20,147,.3), inset 0 1px 0 rgba(255,255,255,.4);
-  color: #fff;
+/* Primary (Download) - Matches Active Toggle (Shiny Metal) 
+*/
+.btn--primary {
+  /* Shiny Metal Gradient */
+  background: linear-gradient(180deg, #E0E0E0 0%, #F5F5F5 45%, #FFFFFF 60%, #F0F0F0 85%, #D0D0D0 100%);
+  border: 2px solid #AAAAAA;
+  color: #000;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,1);
+}
+.btn--primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 25px rgba(255,255,255,1.0), inset 0 1px 0 rgba(255,255,255,1);
+}
+.btn--primary:active {
+  background: linear-gradient(180deg, #CCCCCC 0%, #EEEEEE 100%);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.15);
+  transform: translateY(1px);
 }
 
 /* Secondary (light) */
 .btn--secondary{background:
-  linear-gradient(180deg,#F5F5F5, #E0E0E0 50%, #D0D0D0);
-  border-color:#B0B0B0;color:#333;}
+  linear-gradient(180deg,#FFFFFF, #F0F0F0 50%, #E0E0E0);
+  border-color:#CCCCCC;color:#555;}
 
 /* Toggle style */
 .btn--toggle{min-width:110px}
@@ -391,7 +416,8 @@ button,input,select{font:inherit}
 .panPattern .panSec__hd--with-toggle { padding: 0; margin-bottom: 8px; }
 .panPattern .panSec__hd--with-toggle .btn--toggle { margin: 8px 6px; }
 
-/* [수정됨] 토글 버튼 - Active 상태를 독(Dock)과 동일한 메탈 텍스처로 변경 */
+/* Toggle Buttons - Active State Matches Shiny Metal 
+*/
 .btn--target-toggle {
   height: 32px;
   width: 64px; 
@@ -405,21 +431,21 @@ button,input,select{font:inherit}
   border-radius: 8px;
   cursor: pointer;
   transition: .14s;
-  /* OFF 상태: 흐릿한 회색 */
-  background: linear-gradient(180deg, #F0F0F0, #E0E0E0 50%, #D0D0D0);
-  border: 2px solid #BBB;
-  color: #777;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  /* OFF: Flat light gray */
+  background: linear-gradient(180deg, #F5F5F5, #E5E5E5);
+  border: 2px solid #D0D0D0;
+  color: #888;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
   line-height: normal; 
 }
 .btn--target-toggle[aria-pressed="true"] {
-  /* ON 상태: 독(Dock)과 동일한 선명한 메탈 그라데이션 */
-  background: linear-gradient(180deg, var(--col-chrome-lo) 0%, var(--col-chrome-mid) 45%, var(--col-chrome-hi) 60%, var(--col-chrome-mid) 85%, var(--col-chrome-deep) 100%);
-  border: 2px solid #999;
+  /* ON: Shiny/Glossy White Metal */
+  background: linear-gradient(180deg, #E0E0E0 0%, #F5F5F5 45%, #FFFFFF 60%, #F0F0F0 85%, #C0C0C0 100%);
+  border: 2px solid #AAAAAA;
   color: #000;
   font-weight: bold;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(0,0,0,0.2);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+  box-shadow: 0 0 10px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,1);
 }
 
 /* Forms - White Inputs */
@@ -474,7 +500,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .fontBtn:active{transform:translateY(1px)}
 
 .grid--pattern .patBtn{width:80px;height:80px}
-/* Effect Button */
+/* Effect Button - Mosaic replaces Bold */
 .effectBtn {
   height: 60px;
   border-radius: 10px;
@@ -492,7 +518,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .effectBtn:hover { filter: brightness(0.95); color: #000; border-color: #CCC; }
 .effectBtn:active { transform: translateY(1px); }
 .effectBtn[data-effect="glitter"] { color: #d4af37; text-shadow: 0 0 3px rgba(212, 175, 55, 0.5); }
-.effectBtn[data-effect="bold"] { color: #000; font-weight: 900; text-shadow: 1px 1px 0 #ccc; }
+.effectBtn[data-effect="mosaic"] { color: #333; font-weight: bold; text-shadow: 1px 1px 0 #ccc; }
 .effectBtn[data-effect="metal"] {
   background: linear-gradient(135deg, #bbb, #333 50%, #bbb);
   -webkit-background-clip: text;
@@ -536,7 +562,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   transform: translateY(1px);
   box-shadow: none;
 }
-.btn--icon img { filter: invert(0.8); /* Invert to make icons dark */ }
+.btn--icon img { filter: invert(0.8); }
 
 #btnRandom, #btnClearSel {
   width: 120px;
@@ -550,7 +576,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   height: 100%;
   object-fit: contain;
   pointer-events: none;
-  filter: invert(0.8); /* Invert to make icons dark */
+  filter: invert(0.8);
 }
 .panText__hd-utility {
   display: flex;

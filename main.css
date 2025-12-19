@@ -1,5 +1,5 @@
 /* =============================================
-   Typo Deco Studio — Y2K Metallic UI Skin (v1.2: BG Image)
+   Typo Deco Studio — Y2K Metallic UI Skin (v1.3: Font Update)
    ============================================= */
 
 /* Fonts - Updated Paths to assets/glam/fonts/ */
@@ -11,8 +11,10 @@
 @font-face{font-family:'AngelicWar';src:url('./assets/glam/fonts/AngelicWar.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'HawaiiLover';src:url('./assets/glam/fonts/HawaiiLover.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'Gothik_Steel';src:url('./assets/glam/fonts/Gothik_Steel.woff2') format('woff2');font-display:swap}
-@font-face{font-family:'GunerGraffiti-Extrude';src:url('./assets/glam/fonts/GunerGraffiti-Extrude.woff2') format('woff2');font-display:swap}
-@font-face{font-family:'gomarice_bat_men';src:url('./assets/glam/fonts/gomarice_bat_men.woff2') format('woff2');font-display:swap}
+/* [변경] GunerGraffiti-Extrude 삭제 -> 1_punk 추가 */
+@font-face{font-family:'1_punk';src:url('./assets/glam/fonts/1_punk.woff2') format('woff2');font-display:swap}
+/* [변경] gomarice_bat_men 삭제 -> Freakshow 추가 */
+@font-face{font-family:'Freakshow';src:url('./assets/glam/fonts/Freakshow.woff2') format('woff2');font-display:swap}
 
 /* Root tokens */
 :root{

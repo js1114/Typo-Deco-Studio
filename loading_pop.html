@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POP Loading</title>
+  <style>
+    :root{
+      /* 기본 스타일의 부드러운 이징으로 복귀 */
+      --ease: cubic-bezier(.18,.8,.2,1);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      /* 배경색과 패턴은 POP 버전 유지 */
+      background: #ff1493; 
+      background-image: radial-gradient(#ff69b4 20%, transparent 20%), radial-gradient(#ff69b4 20%, transparent 20%);
+      background-color: #ff007f;
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
+      
+      color:#fff; /* 기본 폰트 색상 화이트로 */
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      overflow:hidden;
+    }
+
+    /* 레이아웃: 기본 스타일(투명 배경, 박스 없음)로 복귀 */
+    .wrap{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      gap:18px;
+      padding:0 24px;
+      background:transparent;
+      box-shadow:none;
+      border-radius:0;
+      width:100%;
+      max-width:520px;
+    }
+
+    /* 폰트: 기본 스타일(깔끔한 고딕, 얇은 그림자)로 복귀 */
+    .title{
+      font-size:clamp(13px,2.5vw,16px);
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      opacity:.9; /* 배경이 진해서 가독성 위해 약간 높임 */
+      font-weight: 400;
+      font-style: normal;
+      color: #fff;
+      text-shadow: none;
+    }
+
+    .percent{
+      font-size:clamp(26px,4.2vw,32px);
+      font-weight:800;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3); /* 은은한 그림자로 복귀 */
+    }
+
+    .percent span{
+      font-variant-numeric:tabular-nums;
+    }
+
+    /* ===== 로딩바 레이아웃은 기본형(둥근 쉘), 색상은 POP(청록) 유지 ===== */
+    .bar-shell{
+      position:relative;
+      margin-top:10px;
+      width:min(80vw,420px);
+      height:26px;
+      border-radius:999px;
+      /* 테두리 제거하고 기본 입체감 복귀 */
+      background: linear-gradient(145deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%);
+      border: none;
+      box-shadow: 
+        inset 0 1px 1px rgba(255,255,255,0.2),
+        inset 0 -3px 5px rgba(0,0,0,0.5),
+        0 14px 32px rgba(0,0,0,0.3);
+      overflow:visible;
+    }
+
+    .bar-shell::before{
+      content:"";
+      position:absolute;
+      inset:2px 3px auto 3px;
+      height:5px;
+      border-radius:999px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+      opacity:.9;
+      pointer-events:none;
+    }
+
+    .bar-shell::after{
+      content:"";
+      position:absolute;
+      left:14%;
+      right:14%;
+      bottom:-18px;
+      height:22px;
+      border-radius:50%;
+      background:radial-gradient(ellipse at center, rgba(0,0,0,0.4), transparent 70%);
+      pointer-events:none;
+    }
+
+    .bar-fill{
+      position:absolute;
+      inset:3px;
+      width:0%;
+      border-radius:999px;
+      /* 색상 유지: POP한 느낌의 밝은 청록(Cyan) 그라데이션 */
+      background: linear-gradient(90deg, #00ffff 0%, #00bfff 100%);
+      /* 빗살무늬 제거하고 기본 광택 효과로 복귀 */
+      box-shadow: 
+        0 0 16px rgba(0, 255, 255, 0.6),
+        0 0 40px rgba(0, 255, 255, 0.3);
+      transition:width 120ms var(--ease);
+      z-index:1;
+      border-right: none;
+    }
+
+    .bar-fill::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      /* 기본 스타일의 광택 */
+      background: linear-gradient(120deg,transparent 0%,rgba(255,255,255,0.4) 40%,transparent 80%);
+      mix-blend-mode:screen;
+      opacity:.65;
+    }
+
+    .spark-layer{
+      position:absolute;
+      left:0;
+      right:0;
+      top:-38px;
+      bottom:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      z-index:2;
+    }
+
+    .spark{
+      position:absolute;
+      width:4px;
+      height:4px;
+      border-radius:50%;
+      /* 반짝이 색상은 POP 버전(옐로우/화이트 등) 유지하되 모양은 기본 원형 */
+      background: #fff; 
+      box-shadow: 0 0 8px #fff;
+      animation:spark-fly 950ms ease-out forwards;
+    }
+
+    @keyframes spark-fly{
+      0%{
+        transform:translate3d(0,0,0) scale(0.2);
+        opacity:0;
+      }
+      20%{
+        transform:translate3d(0,-4px,0) scale(0.6);
+        opacity:1;
+      }
+      60%{
+        transform:translate3d(4px,-18px,0) scale(1);
+        opacity:0.9;
+      }
+      100%{
+        transform:translate3d(8px,-30px,0) scale(1.1);
+        opacity:0;
+      }
+    }
+
+    .sub{
+      margin-top:10px;
+      font-size:clamp(11px,1.9vw,13px);
+      opacity:.9;
+      letter-spacing:0.08em;
+      font-weight: 400;
+      color: #fff;
+      text-shadow: none;
+    }
+
+    @media (max-width:520px){
+      .wrap{ padding:0 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 로딩 화면 -->
+  <div class="wrap">
+    <div class="title">POP STYLE</div>
+    <div class="percent">LOADING... <span id="percentText">00%</span></div>
+
+    <div class="bar-shell">
+      <div class="bar-fill" id="barFill"></div>
+      <div class="spark-layer" id="sparkLayer"></div>
+    </div>
+
+    <div class="sub">Popping the colors...</div>
+  </div>
+
+  <script>
+    (function() {
+      const percentText = document.getElementById("percentText");
+      const barFill = document.getElementById("barFill");
+      const sparkLayer = document.getElementById("sparkLayer");
+
+      let p = 0;
+
+      function spawnSparks(intensity){
+        if (!sparkLayer) return;
+
+        const base = Math.max(2, intensity * 2);
+        const count = base + Math.floor(Math.random() * base);
+
+        // 색상은 팝하게 유지
+        const colors = ['#fff200', '#ffffff', '#00ffcc'];
+
+        for (let i = 0; i < count; i++){
+          const s = document.createElement("div");
+          s.className = "spark";
+          
+          s.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          // 그림자 색상도 해당 컬러로
+          s.style.boxShadow = `0 0 8px ${s.style.backgroundColor}`;
+
+          const jitter = (Math.random() - 0.5) * 4; 
+          let tip = p + jitter;
+          tip = Math.max(0, Math.min(100, tip));
+          s.style.left = tip + "%";
+
+          s.style.bottom = "8%";
+          s.style.animationDuration = (650 + Math.random() * 450) + "ms";
+          s.style.opacity = (0.6 + Math.random() * 0.35).toFixed(2);
+
+          sparkLayer.appendChild(s);
+
+          setTimeout(() => {
+            s.remove();
+          }, 1300);
+        }
+      }
+
+      const tick = () => {
+        const step = Math.floor(Math.random() * 9) + 4; 
+        p = Math.min(100, p + step);
+
+        const shown = p.toString().padStart(2, "0") + "%";
+        if(percentText) percentText.textContent = shown;
+        if(barFill) barFill.style.width = p + "%";
+
+        const intensity = p < 40 ? 2 : p < 75 ? 5 : 12;
+        spawnSparks(intensity);
+
+        if (p >= 100) {
+          setTimeout(() => {
+            // 다시 원래 로직(페이지 이동)으로 복구
+            window.location.href = "pop.html";
+          }, 450);
+        } else {
+          setTimeout(tick, 90);
+        }
+      };
+
+      setTimeout(tick, 220);
+    })();
+  </script>
+</body>
+</html>

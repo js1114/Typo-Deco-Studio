@@ -14,8 +14,10 @@
     @font-face{font-family:'AngelicWar';src:url('./assets/glam/fonts/AngelicWar.woff2') format('woff2');font-display:swap}
     @font-face{font-family:'HawaiiLover';src:url('./assets/glam/fonts/HawaiiLover.woff2') format('woff2');font-display:swap}
     @font-face{font-family:'Gothik_Steel';src:url('./assets/glam/fonts/Gothik_Steel.woff2') format('woff2');font-display:swap}
-    @font-face{font-family:'GunerGraffiti-Extrude';src:url('./assets/glam/fonts/GunerGraffiti-Extrude.woff2') format('woff2');font-display:swap}
-    @font-face{font-family:'gomarice_bat_men';src:url('./assets/glam/fonts/gomarice_bat_men.woff2') format('woff2');font-display:swap}
+    /* [변경] GunerGraffiti-Extrude 삭제 -> 1_punk 추가 */
+    @font-face{font-family:'1_punk';src:url('./assets/glam/fonts/1_punk.woff2') format('woff2');font-display:swap}
+    /* [변경] gomarice_bat_men 삭제 -> Freakshow 추가 */
+    @font-face{font-family:'Freakshow';src:url('./assets/glam/fonts/Freakshow.woff2') format('woff2');font-display:swap}
     :root{--stage-w:1440px;--stage-h:860px;--canvas-w:1400px;--canvas-h:800px}
     .dock{width:var(--stage-w)}
   </style>
@@ -34,8 +36,8 @@
   <header id="appHeader" class="hdr" role="banner" aria-label="Application header">
     <div class="hdr__inner">
       <!-- REPLACED: H1 text with Image Link (Fixed Position) -->
-      <a href="#" class="logo-link" aria-label="Typo Deco Studio">
-        <!-- src 속성을 "logo.png"로 설정하여 같은 폴더의 이미지를 불러옵니다 -->
+      <!-- href updated to index.html as requested -->
+      <a href="index.html" class="logo-link" aria-label="Typo Deco Studio">
         <img src="logo.png" alt="Typo Deco Studio Logo" />
       </a>
       
@@ -114,8 +116,10 @@
           <button class="fontBtn" data-font="AngelicWar">AngelicWar</button>
           <button class="fontBtn" data-font="HawaiiLover">HawaiiLover</button>
           <button class="fontBtn" data-font="Gothik_Steel">Gothik Steel</button>
-          <button class="fontBtn" data-font="GunerGraffiti-Extrude">GunerGraffiti-Extrude</button>
-          <button class="fontBtn" data-font="gomarice_bat_men">gomarice_bat_men</button>
+          <!-- [변경] GunerGraffiti-Extrude 삭제 -> 1_punk 추가 -->
+          <button class="fontBtn" data-font="1_punk">1 punk</button>
+          <!-- [변경] gomarice_bat_men 삭제 -> Freakshow 추가 -->
+          <button class="fontBtn" data-font="Freakshow">Freakshow</button>
         </div>
       </section>
 

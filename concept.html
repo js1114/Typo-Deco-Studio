@@ -1,4 +1,4 @@
-<!-- concept.html (Concept select with Heaven white fade, logo → index.html) -->
+<!-- concept.html (Concept select with Heaven white fade, logo → index.html, responsive) -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -352,6 +352,52 @@
       background:#ffffff;
     }
 
+    /* --------- 모바일 반응형 (휴대폰 비율용) --------- */
+    @media (max-width: 768px){
+      :root{
+        --card-size: min(70vw, 260px);
+        --side-scale: 0.8;
+        --gap: 140px;
+        --arrow-w: clamp(28px, 8vw, 40px);
+        --arrow-h: clamp(70px, 20vw, 100px);
+      }
+
+      body{
+        overflow:hidden;
+      }
+
+      .stage{
+        width:100vw;
+        height:100vh;
+      }
+
+      .glow{
+        width: min(80vw, 420px);
+        height: min(80vw, 420px);
+      }
+
+      .logo-link img{
+        height:60px;
+      }
+
+      .center-label{
+        top: calc(50% + (var(--card-size) / 2) + 22px);
+        font-size: 13px;
+        letter-spacing:0.16em;
+      }
+
+      .arrow.left{ left: 6px; }
+      .arrow.right{ right: 6px; }
+
+      .pos-left{
+        transform: translateX(calc(-1 * var(--gap))) translateZ(0) scale(var(--side-scale)) rotateY(14deg);
+      }
+      .pos-right{
+        transform: translateX(var(--gap)) translateZ(0) scale(var(--side-scale)) rotateY(-14deg);
+      }
+    }
+
+    /* 기존 520px 이하 미세 조정 유지 */
     @media (max-width: 520px){
       :root{ --gap: 150px; }
       .center-label{

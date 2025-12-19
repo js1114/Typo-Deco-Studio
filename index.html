@@ -20,8 +20,9 @@
       overflow:hidden;
       color:#fff;
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      /* 중앙을 훨씬 더 밝게 수정 (#e0e0e0 시작) */
       background:
-        radial-gradient(900px circle at 50% 45%, #6f6f6f 0%, #4c4c4c 32%, #343434 62%, #222222 82%, #181818 100%),
+        radial-gradient(1100px circle at 50% 45%, #e0e0e0 0%, #999999 20%, #444444 50%, #1a1a1a 85%, #000000 100%),
         linear-gradient(120deg, #ffffff18 0%, transparent 35%, #ffffff12 55%, transparent 75%, #ffffff18 100%);
       background-size: 100% 100%, 220% 220%;
       animation: bgFlow 8s linear infinite;
@@ -32,13 +33,102 @@
       100%{ background-position: 0 0, 100% 100%; }
     }
 
-    /* 마우스를 따라다니는 글리터 스파클 (concept 페이지와 동일한 효과) */
+    /* 마우스를 따라다니는 글리터 스파클 & 배경 부유 입자 캔버스 */
     #sparkCanvas{
       position:fixed;
       inset:0;
       pointer-events:none;
       z-index:5;
       mix-blend-mode:screen;
+    }
+
+    /* --- 메탈릭 테두리 프레임 (New) --- */
+    .metal-frame {
+      position: fixed;
+      inset: 20px;
+      pointer-events: none;
+      z-index: 50;
+      /* 금속 질감의 테두리 그라디언트 */
+      border: 4px solid transparent;
+      border-image: linear-gradient(135deg, 
+        #555 0%, 
+        #ccc 20%, 
+        #888 40%, 
+        #fff 50%, 
+        #888 60%, 
+        #ccc 80%, 
+        #555 100%
+      ) 1;
+      box-shadow: 
+        inset 0 0 30px rgba(0,0,0,0.8),
+        0 0 20px rgba(0,0,0,0.5);
+    }
+
+    /* 프레임 코너 장식 (더 기계적인 느낌) */
+    .metal-frame::before, .metal-frame::after {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 4px solid transparent;
+      border-image: linear-gradient(135deg, #fff, #888) 1;
+      z-index: 51;
+      transition: all 0.5s ease;
+    }
+    
+    /* 좌상단, 우하단 코너 */
+    .metal-frame::before {
+      top: -4px; left: -4px;
+      border-right: none;
+      border-bottom: none;
+      border-image-slice: 1;
+    }
+    /* 우상단, 좌하단 코너를 위한 추가 요소 */
+    .corner-deco {
+      position: absolute;
+      inset: -4px;
+      pointer-events: none;
+    }
+    .corner-deco::before, .corner-deco::after {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 4px solid transparent;
+      border-image: linear-gradient(135deg, #fff, #888) 1;
+    }
+    .corner-deco::before {
+      top: 0; right: 0;
+      border-left: none;
+      border-bottom: none;
+    }
+    .corner-deco::after {
+      bottom: 0; left: 0;
+      border-right: none;
+      border-top: none;
+    }
+    .metal-frame::after {
+      bottom: -4px; right: -4px;
+      border-left: none;
+      border-top: none;
+      border-image-slice: 1;
+    }
+
+    /* 화면 스캔라인 효과 (밀도감 추가) */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.1) 50%,
+        rgba(0,0,0,0.1)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0.3;
     }
 
     .hero{
@@ -48,7 +138,7 @@
       z-index:10;
     }
 
-        .hero-logo{
+    .hero-logo{
       position:relative;
       z-index:1;
       width: clamp(810px, 117vw, 1170px);
@@ -59,7 +149,7 @@
     }
 
 
-        .make-it{
+    .make-it{
       position:absolute;
       top:70%;
       left:50%;
@@ -95,25 +185,11 @@
       animation: makeClick 220ms var(--ease);
     }
 
-
-    .make-it:hover{
-      color:#ff1493;
-      text-shadow:0 0 18px rgba(255,20,147,0.7);
-    }
-
-    .make-it:active{
-      color:#c01270;
-    }
-
-    .make-it.is-clicking{
-      color:#c01270;
-      animation: makeClick 220ms var(--ease);
-    }
-
     @keyframes makeClick{
-      0%{ transform:scale(1); }
-      50%{ transform:scale(0.93); }
-      100%{ transform:scale(1); }
+      /* translate(-50%, -50%)를 유지해야 중앙 정렬이 깨지지 않음 */
+      0%{ transform: translate(-50%, -50%) scale(1); }
+      50%{ transform: translate(-50%, -50%) scale(0.93); }
+      100%{ transform: translate(-50%, -50%) scale(1); }
     }
 
     @media (max-width: 520px){
@@ -123,22 +199,31 @@
       .make-it{
         letter-spacing:0.14em;
       }
+      .metal-frame { inset: 10px; } /* 모바일에서 테두리 간격 축소 */
     }
   </style>
 </head>
 <body>
-  <!-- 반짝이 마우스 효과 캔버스 -->
+  <!-- 스캔라인 패턴 -->
+  <div class="scanlines"></div>
   
+  <!-- 메탈릭 테두리 프레임 -->
+  <div class="metal-frame">
+    <div class="corner-deco"></div>
+  </div>
+
+  <!-- 반짝이 효과 캔버스 -->
   <canvas id="sparkCanvas"></canvas>
 
-    <div class="hero">
+  <div class="hero">
     <button class="make-it" id="makeItBtn">make it</button>
-    <img id="heroLogo" class="hero-logo" src="assets/logo/logo1.gif" alt="Make It Logo" />
+    <!-- gif -> png 로 수정 -->
+    <img id="heroLogo" class="hero-logo" src="assets/logo/logo1.png" alt="Make It Logo" />
   </div>
 
   <script>
-    // ----- 로고 10개 1초 로테이션 -----
-    const logoPaths = Array.from({ length: 10 }, (_, i) => `assets/logo/logo${i+1}.gif`);
+    // ----- 로고 10개 1초 로테이션 (gif -> png 수정) -----
+    const logoPaths = Array.from({ length: 10 }, (_, i) => `assets/logo/logo${i+1}.png`);
     const heroLogo = document.getElementById("heroLogo");
     let logoIndex = 0;
 
@@ -149,36 +234,66 @@
 
     setInterval(rotateLogo, 1000);
 
-    // ----- make it 텍스트 클릭 애니메이션 ---jj--
+    // ----- make it 텍스트 클릭 애니메이션 및 페이지 이동 -----
     const makeItBtn = document.getElementById("makeItBtn");
     makeItBtn.addEventListener("click", () => {
+      // 1. 애니메이션 클래스 재설정 (제자리 클릭 애니메이션)
       makeItBtn.classList.remove("is-clicking");
       void makeItBtn.offsetWidth; // 애니메이션 리셋용 강제 리플로우
       makeItBtn.classList.add("is-clicking");
+
+      // 2. 애니메이션이 조금 진행된 후 페이지 이동 (300ms 딜레이)
+      setTimeout(() => {
+        window.location.href = "concept.html"; 
+      }, 300);
     });
 
-    // ----- Sparkle trail (concept 화면과 동일한 반짝이 효과) -----
+    // ----- Canvas Effect System -----
     const sparkCanvas = document.getElementById("sparkCanvas");
     const sctx = sparkCanvas.getContext("2d");
+    
+    // 1. Mouse Sparkle Trail (기존)
     let sparks = [];
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     const maxSparks = 160;
 
+    // 2. Background Floating Stars (추가됨)
+    let bgStars = [];
+    const bgStarCount = 50; // 넓은 간격을 위해 적당한 수
+
+    function initBgStars() {
+        bgStars = [];
+        for(let i = 0; i < bgStarCount; i++){
+            bgStars.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 1.5 + 0.2, // 아주 작은 크기
+                vx: (Math.random() - 0.5) * 0.3, // 매우 느린 속도
+                vy: (Math.random() - 0.5) * 0.3,
+                alpha: Math.random() * 0.6 + 0.2,
+                alphaSpeed: (Math.random() * 0.01) + 0.002, // 깜빡임 속도
+                direction: 1
+            });
+        }
+    }
+
     function resizeSpark(){
       sparkCanvas.width  = window.innerWidth;
       sparkCanvas.height = window.innerHeight;
+      initBgStars(); // 리사이즈 시 배경 별 재배치
     }
     resizeSpark();
     window.addEventListener("resize", resizeSpark);
 
+    // Mouse Event
     window.addEventListener("mousemove", (e)=>{
       mouseX = e.clientX;
       mouseY = e.clientY;
       for(let i=0; i<6; i++){
         if(sparks.length > maxSparks) sparks.shift();
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 0.6 + 0.15; // concept.html과 동일한 설정
+        const speed = Math.random() * 0.6 + 0.15;
         sparks.push({
           x: mouseX + (Math.random()-0.5) * 12,
           y: mouseY + (Math.random()-0.5) * 12,
@@ -196,6 +311,35 @@
     function drawSparks(){
       sctx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);
 
+      // --- Draw Background Floating Stars ---
+      for(let star of bgStars){
+          // Move
+          star.x += star.vx;
+          star.y += star.vy;
+
+          // Wrap around edges
+          if(star.x < 0) star.x = sparkCanvas.width;
+          if(star.x > sparkCanvas.width) star.x = 0;
+          if(star.y < 0) star.y = sparkCanvas.height;
+          if(star.y > sparkCanvas.height) star.y = 0;
+
+          // Twinkle Alpha
+          star.alpha += star.alphaSpeed * star.direction;
+          if(star.alpha >= 0.8) {
+              star.alpha = 0.8;
+              star.direction = -1;
+          } else if(star.alpha <= 0.2) {
+              star.alpha = 0.2;
+              star.direction = 1;
+          }
+
+          sctx.fillStyle = "rgba(255, 255, 255," + star.alpha + ")";
+          sctx.beginPath();
+          sctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          sctx.fill();
+      }
+
+      // --- Draw Mouse Sparkles ---
       for(let i=0; i<sparks.length; i++){
         const p = sparks[i];
         p.x += p.vx;
@@ -235,6 +379,5 @@
     }
     drawSparks();
   </script>
-  <!-- test update -->
 </body>
 </html>

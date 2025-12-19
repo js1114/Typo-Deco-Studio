@@ -1,6 +1,7 @@
 /* =====================================================
-   Typo Deco Studio — App (v12.8: Initial Effect Metal)
-   - FIXED: Default text effect set to 'metal'.
+   Typo Deco Studio — App (v12.9: Mosaic Effect)
+   - REPLACED: Bold effect with Mosaic.
+   - ADDED: createMosaicTexture to generate tile grid.
    ===================================================== */
 
 // ---------- DOM refs ----------
@@ -61,7 +62,7 @@ const btnSaveGif = document.getElementById('btnSaveGif');
 // ---------- Global state ----------
 let dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
 
-// [수정됨] 초기 기본값: AngelicWar, #b7a9a9, Stroke 0, Effect 'metal'
+// 초기 기본값: AngelicWar, #b7a9a9, Stroke 0, Effect 'metal'
 let base = {
   font: 'AngelicWar',
   size: 120,
@@ -74,7 +75,7 @@ let base = {
   shadowBlur: 8,
   pattern: null,
   strokePattern: null,
-  effect: 'metal' // Changed from 'none' to 'metal'
+  effect: 'metal'
 };
 
 let shadowEnabled = true;
@@ -115,7 +116,7 @@ const stickerPacks = [
 
 const FONT_LIST = [
   'Darling','CAMPUS_PERSONAL_USE','mieszkanie9','White_On_Black','built_titling_el_it','AngelicWar','HawaiiLover',
-  'Gothik_Steel','GunerGraffiti-Extrude','gomarice_bat_men'
+  'Gothik_Steel','WordsTakenDemo','gomarice_bat_men'
 ];
 
 // ---------- Core Functions ----------
@@ -299,23 +300,24 @@ function createMetalTexture(w, h) {
   return c;
 }
 
-function createBoldTexture(w, h) {
+// [New] Mosaic Texture
+function createMosaicTexture(w, h) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   const ctx = c.getContext('2d');
-  const grad = ctx.createLinearGradient(0, 0, w, h);
-  grad.addColorStop(0.00, 'rgba(255, 255, 255, 1.0)'); 
-  grad.addColorStop(0.15, 'rgba(255, 255, 255, 0.1)'); 
-  grad.addColorStop(0.45, 'rgba(128, 128, 128, 0.0)'); 
-  grad.addColorStop(0.55, 'rgba(128, 128, 128, 0.0)'); 
-  grad.addColorStop(0.80, 'rgba(0, 0, 0, 0.3)'); 
-  grad.addColorStop(1.00, 'rgba(0, 0, 0, 1.0)'); 
-  ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
-  ctx.globalCompositeOperation = 'source-over';
-  const bevelShadow = ctx.createLinearGradient(w * 0.5, h * 0.5, w, h);
-  bevelShadow.addColorStop(0.0, 'rgba(0, 0, 0, 0)');
-  bevelShadow.addColorStop(0.8, 'rgba(0, 0, 0, 0.15)');
-  bevelShadow.addColorStop(1.0, 'rgba(0, 0, 0, 0.25)'); 
-  ctx.fillStyle = bevelShadow; ctx.fillRect(0, 0, w, h);
+  const tileSize = 8; // Size of mosaic tiles
+
+  for(let y=0; y<h; y+=tileSize) {
+      for(let x=0; x<w; x+=tileSize) {
+          // Generate a random gray value
+          const gray = Math.floor(Math.random() * 255);
+          ctx.fillStyle = `rgb(${gray},${gray},${gray})`;
+          ctx.fillRect(x, y, tileSize, tileSize);
+          
+          // Optional: Add faint border for tile separation
+          ctx.strokeStyle = `rgba(0,0,0,0.1)`;
+          ctx.strokeRect(x,y,tileSize,tileSize);
+      }
+  }
   return c;
 }
 
@@ -495,7 +497,7 @@ function drawEffectBatch(ctx, indices, effectType, bounds, cx, cy, vOffset) {
     let texture = null;
     if(effectType === 'glitter') texture = createGlitterTexture(w, h);
     if(effectType === 'metal') texture = createMetalTexture(w, h);
-    if(effectType === 'bold') texture = createBoldTexture(w, h);
+    if(effectType === 'mosaic') texture = createMosaicTexture(w, h); // New Mosaic
 
     if(!texture) return;
 
@@ -515,8 +517,8 @@ function drawEffectBatch(ctx, indices, effectType, bounds, cx, cy, vOffset) {
     if(effectType === 'metal') {
         ctx.globalCompositeOperation = 'hard-light'; 
         ctx.globalAlpha = 1.0; 
-    } else if (effectType === 'bold') {
-        ctx.globalCompositeOperation = 'source-atop'; 
+    } else if (effectType === 'mosaic') {
+        ctx.globalCompositeOperation = 'overlay'; // Mosaic Overlay
     } else if (effectType === 'glitter') {
         ctx.globalCompositeOperation = 'overlay';
         ctx.drawImage(comp, 0, 0, w, h);
