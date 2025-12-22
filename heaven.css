@@ -55,6 +55,7 @@ body{
   background-color: var(--ui-bg); 
   
   /* [PC 기본] 75% 축소 유지 */
+  /* zoom 속성은 비표준이지만 PC 크롬 등에서 작동함. 모바일에서는 @media로 초기화 필요 */
   zoom: 0.75; 
 }
 img{display:block;max-width:100%}
@@ -472,6 +473,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 .fontBtn:active{transform:translateY(1px)}
 
 .grid--pattern .patBtn{width:80px;height:80px}
+/* Effect Button - Mosaic replaces Bold */
 .effectBtn {
   height: 60px;
   border-radius: 10px;
@@ -498,16 +500,20 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 }
 .effectBtn:focus-visible { outline: 2px solid var(--col-hotpink); outline-offset: 2px; }
 
+/* Radio rows */
 .radioRow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 #bgFile{width:100%}
 
+/* Focus rings */
 .fontBtn:focus-visible,.btn:focus-visible,input[type="text"]:focus-visible, textarea#textInput:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px}
 
+/* Scrollbars - Light */
 ::-webkit-scrollbar{height:8px;width:8px}
 ::-webkit-scrollbar-track{background:#F0F0F0}
 ::-webkit-scrollbar-thumb{background:#CCC;border-radius:8px}
 ::-webkit-scrollbar-thumb:hover{background:#BBB}
 
+/* Utility Icons - Reverted filter to invert(0.8) as requested */
 .panel > .utility-icons {
   display: flex;
   gap: 0px;
@@ -529,7 +535,6 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   transform: translateY(1px);
   box-shadow: none;
 }
-/* [수정됨] 아이콘 색상 원래대로 복구 (다크 모드 이미지라면 반전시켜 밝게, 화이트면 그대로) */
 .btn--icon img { filter: invert(0.8); }
 
 #btnRandom, #btnClearSel {
@@ -560,10 +565,10 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 }
 
 /* =============================================
-   RESPONSIVE LAYOUT (MOBILE)
+   RESPONSIVE LAYOUT (MOBILE Only)
    ============================================= */
 @media screen and (max-width: 1200px) {
-  /* PC Zoom 제거, Mobile Zoom 적용 */
+  /* PC Zoom 제거, Mobile Zoom 적용 (1로 설정하여 실제 크기로) */
   body { zoom: 1; }
 
   /* 세로 배치로 변경 */
@@ -573,7 +578,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
     align-items: center;
   }
 
-  /* 너비 자동 조절 */
+  /* 너비 자동 조절 (유동적) */
   .work, .panel {
     width: 100%;
     min-width: 0;
@@ -601,7 +606,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   #mainCanvas {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* 캔버스 비율 유지 */
   }
 
   /* 독(Dock) 반응형 */
