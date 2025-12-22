@@ -1,25 +1,27 @@
 /* =============================================
    Heaven Deco Studio — White/Silver UI Skin
-   (PC: Fixed Layout with Zoom / Mobile: Responsive)
+   (Restored cleaner UI, applied Shiny Metal effect ONLY to Buttons)
    ============================================= */
 
-/* Fonts */
+/* Fonts - Updated Paths to assets/heaven/fonts/ */
 @font-face{font-family:'Darling';src:url('./assets/heaven/fonts/Darling.woff2') format('woff2');font-display:swap}
-@font-face{font-family:'bad_grunge';src:url('./assets/heaven/fonts/bad_grunge.woff2') format('woff2');font-display:swap}
+@font-face{font-family:'CAMPUS_PERSONAL_USE';src:url('./assets/heaven/fonts/CAMPUS_PERSONAL_USE.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'mieszkanie9';src:url('./assets/heaven/fonts/mieszkanie9.woff2') format('woff2');font-display:swap}
-@font-face{font-family:'freaksjow';src:url('./assets/heaven/fonts/freaksjow.woff2') format('woff2');font-display:swap}
+@font-face{font-family:'White_On_Black';src:url('./assets/heaven/fonts/White_On_Black.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'built_titling_el_it';src:url('./assets/heaven/fonts/built_titling_el_it.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'AngelicWar';src:url('./assets/heaven/fonts/AngelicWar.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'HawaiiLover';src:url('./assets/heaven/fonts/HawaiiLover.woff2') format('woff2');font-display:swap}
 @font-face{font-family:'Gothik_Steel';src:url('./assets/heaven/fonts/Gothik_Steel.woff2') format('woff2');font-display:swap}
+/* Font Changed: GunerGraffiti -> WordsTakenDemo */
 @font-face{font-family:'WordsTakenDemo';src:url('./assets/heaven/fonts/WordsTakenDemo.woff2') format('woff2');font-display:swap}
-@font-face{font-family:'lowerResolution';src:url('./assets/heaven/fonts/lowerResolution.woff2') format('woff2');font-display:swap}
+@font-face{font-family:'gomarice_bat_men';src:url('./assets/heaven/fonts/gomarice_bat_men.woff2') format('woff2');font-display:swap}
 
-/* Root tokens */
+/* Root tokens - Clean White Mode */
 :root{
   --col-black:#000000;
   --col-hotpink:#FF1493;
   
+  /* Silver/White Chrome Palette */
   --col-chrome-hi:#FFFFFF;
   --col-chrome-mid:#E0E0E0;
   --col-chrome-lo:#C0C0C0;
@@ -31,7 +33,10 @@
   --col-accent-cyan:#33CCFF;
   --col-accent-neon:#39FF14;
 
+  /* Main Background */
   --ui-bg:#F5F7FA; 
+  
+  /* Text */
   --text:#222222; 
 
   --panel-w:540px;
@@ -54,9 +59,7 @@ body{
   background-size: cover; 
   background-color: var(--ui-bg); 
   
-  /* [PC 기본] 75% 축소 유지 */
-  /* zoom 속성은 비표준이지만 PC 크롬 등에서 작동함. 모바일에서는 @media로 초기화 필요 */
-  zoom: 0.75; 
+  zoom: 0.75;
 }
 img{display:block;max-width:100%}
 button,input,select{font:inherit}
@@ -65,7 +68,7 @@ button,input,select{font:inherit}
 .visually-hidden{position:absolute;width:1px;height:1px;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;border:0;padding:0;margin:-1px}
 .meta{font-size:12px;opacity:.85;margin-top:6px}
 
-/* Header */
+/* Header - Clean White */
 .hdr{position:sticky;top:0;z-index:10;padding:12px 16px;background:
   linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8) 40%),
   #FFFFFF;
@@ -75,6 +78,7 @@ button,input,select{font:inherit}
 }
 .hdr__inner{max-width:1920px;margin:0 auto;display:flex;align-items:center;justify-content:flex-end}
 
+/* Logo */
 .logo-link{
   position:fixed;
   top:16px;
@@ -88,10 +92,9 @@ button,input,select{font:inherit}
   display:block;
 }
 
-/* Layout (Default PC) */
+/* Layout */
 .layout{
   max-width:1920px;
-  /* PC 높이 계산 유지 */
   height: calc(133.33vh - 64px); 
   margin:0 auto;
   display:flex;
@@ -100,7 +103,7 @@ button,input,select{font:inherit}
 }
 .work{flex:1;display:flex;flex-direction:column;gap:12px;align-items:center}
 
-/* Panel */
+/* Panel - Clean Silver/White (No excessive glow) */
 .panel{
   width:var(--panel-w);
   overflow:auto;
@@ -115,7 +118,7 @@ button,input,select{font:inherit}
   flex-direction: column;
 }
 
-/* Stage */
+/* Stage - Clean Frame */
 .stage{position:relative;width:var(--stage-w);height:var(--stage-h);padding:20px;border-radius:16px;
   background:
     linear-gradient(180deg,var(--col-chrome-lo),var(--col-chrome-mid) 18%,var(--col-chrome-hi) 50%,var(--col-chrome-mid) 82%,var(--col-chrome-lo)),
@@ -123,12 +126,12 @@ button,input,select{font:inherit}
   border:4px ridge #CCCCCC;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.8), inset 0 6px 12px rgba(0,0,0,.05), 0 16px 36px rgba(0,0,0,.15);
 }
-.stage::after{
+.stage::after{ /* inner bevel line */
   content:"";position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.1);
   pointer-events:none;
 }
 
-/* Checkerboard */
+/* Checkerboard - High Brightness */
 #stageOverlay, .stage{--tile:12px}
 .stage::before{content:"";position:absolute;inset:20px;border-radius:12px;background:
   linear-gradient(0deg, rgba(255,255,255,.85), rgba(255,255,255,.85)),
@@ -136,6 +139,7 @@ button,input,select{font:inherit}
   z-index:0;
 }
 
+/* Canvas placement */
 #mainCanvas{position:relative;z-index:1;display:block;width:var(--canvas-w);height:var(--canvas-h);margin:auto;border-radius:8px;}
 
 /* Processing Overlay */
@@ -249,7 +253,7 @@ button,input,select{font:inherit}
 }
 .modal-close:hover { color: #333; }
 
-/* Dock */
+/* Dock - Light Silver */
 .dock{
   width:var(--stage-w);
   min-height:var(--dock-h);
@@ -288,8 +292,10 @@ button,input,select{font:inherit}
 .dock__list > *{flex:0 0 auto}
 .sticker-btn,.thumb{margin:0}
 
+/* Sticker slot wrapper */
 .sticker-slot { position: relative; }
 
+/* Thumbnail Styling - White bg */
 .thumb,.patBtn{
   width:96px;
   height:96px;
@@ -304,6 +310,7 @@ button,input,select{font:inherit}
 .thumb::after,.patBtn::after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
 .thumb:focus-visible,.patBtn:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px;box-shadow:0 0 0 2px #fff,inset 0 0 0 1px rgba(255,255,255,.5)}
 
+/* Sticker Arrow Buttons */
 .sticker-arrow {
   position: absolute;
   left: 50%;
@@ -329,6 +336,7 @@ button,input,select{font:inherit}
 .sticker-arrow.up { top: -12px; }
 .sticker-arrow.down { bottom: -12px; }
 
+/* Triangle shape */
 .sticker-arrow::before {
   content: '';
   position: absolute;
@@ -346,18 +354,26 @@ button,input,select{font:inherit}
 }
 .sticker-arrow.down::before { clip-path: polygon(0% 0%, 100% 0%, 50% 100%); }
 
-/* Buttons - Light Metal */
-.btn{height:48px;line-height:46px;padding:0 20px;border-radius:12px;border:2px solid #B0B0B0;color:#333;background:
-  linear-gradient(180deg,var(--col-chrome-hi),var(--col-chrome-mid) 45%,var(--col-chrome-lo) 60%,var(--col-chrome-mid) 85%,var(--col-chrome-hi));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 6px 14px rgba(0,0,0,.1);
+/* Buttons - Shiny/Glossy White Metal 
+   ONLY buttons get the extra glow and contrast
+*/
+.btn{height:48px;line-height:46px;padding:0 20px;border-radius:12px;border:2px solid #D0D0D0;color:#333;
+  /* High contrast glossy white gradient */
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 45%, #E0E0E0 50%, #F5F5F5 100%);
+  box-shadow: 0 0 15px rgba(255,255,255,0.7), inset 0 1px 0 rgba(255,255,255,1);
   text-transform:uppercase;letter-spacing:1px;cursor:pointer;user-select:none;transition:.14s cubic-bezier(.2,.8,.2,1), transform .14s;}
-.btn:hover{filter:brightness(1.03);}
-.btn:active{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 2px 6px rgba(0,0,0,.1);}
+.btn:hover{
+  filter: brightness(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.9), inset 0 1px 0 rgba(255,255,255,1);
+}
+.btn:active{transform:translateY(2px);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);}
 .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
-.btn:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px;box-shadow:0 0 0 2px #fff,inset 0 1px 0 rgba(255,255,255,.5)}
+.btn:focus-visible{outline:2px solid var(--col-hotpink);outline-offset:2px;box-shadow:0 0 0 3px #fff}
 
-/* Primary (Download) - Metal Style */
+/* Primary (Download) - Matches Active Toggle (Shiny Metal) 
+*/
 .btn--primary {
+  /* Shiny Metal Gradient */
   background: linear-gradient(180deg, #E0E0E0 0%, #F5F5F5 45%, #FFFFFF 60%, #F0F0F0 85%, #D0D0D0 100%);
   border: 2px solid #AAAAAA;
   color: #000;
@@ -375,12 +391,15 @@ button,input,select{font:inherit}
   transform: translateY(1px);
 }
 
+/* Secondary (light) */
 .btn--secondary{background:
-  linear-gradient(180deg,#F5F5F5, #E0E0E0 50%, #D0D0D0);
-  border-color:#B0B0B0;color:#333;}
+  linear-gradient(180deg,#FFFFFF, #F0F0F0 50%, #E0E0E0);
+  border-color:#CCCCCC;color:#555;}
 
+/* Toggle style */
 .btn--toggle{min-width:110px}
 
+/* Panel sections */
 .panSec{margin-bottom:16px;padding:10px;border-radius:12px;background:
   linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,.6));
   border:1px solid #D0D0D0;box-shadow:inset 0 1px 0 rgba(255,255,255,1), 0 4px 8px rgba(0,0,0,.05);
@@ -397,7 +416,8 @@ button,input,select{font:inherit}
 .panPattern .panSec__hd--with-toggle { padding: 0; margin-bottom: 8px; }
 .panPattern .panSec__hd--with-toggle .btn--toggle { margin: 8px 6px; }
 
-/* Toggle Buttons - Metal Style */
+/* Toggle Buttons - Active State Matches Shiny Metal 
+*/
 .btn--target-toggle {
   height: 32px;
   width: 64px; 
@@ -411,6 +431,7 @@ button,input,select{font:inherit}
   border-radius: 8px;
   cursor: pointer;
   transition: .14s;
+  /* OFF: Flat light gray */
   background: linear-gradient(180deg, #F5F5F5, #E5E5E5);
   border: 2px solid #D0D0D0;
   color: #888;
@@ -418,6 +439,7 @@ button,input,select{font:inherit}
   line-height: normal; 
 }
 .btn--target-toggle[aria-pressed="true"] {
+  /* ON: Shiny/Glossy White Metal */
   background: linear-gradient(180deg, #E0E0E0 0%, #F5F5F5 45%, #FFFFFF 60%, #F0F0F0 85%, #C0C0C0 100%);
   border: 2px solid #AAAAAA;
   color: #000;
@@ -426,6 +448,7 @@ button,input,select{font:inherit}
   box-shadow: 0 0 10px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,1);
 }
 
+/* Forms - White Inputs */
 .form{display:grid;grid-template-columns:1fr;gap:10px}
 input[type="text"], textarea#textInput {
   width:100%;
@@ -444,6 +467,7 @@ input[type="text"], textarea#textInput {
 input[type="text"] { height: 40px; padding: 0 12px; resize: none; }
 input[type="text"]::placeholder, textarea#textInput::placeholder { color:#AAA; }
 
+/* Range sliders - Light Track */
 input[type="range"]{appearance:none;width:100%;height:6px;border-radius:8px;background:
   linear-gradient(180deg,#E0E0E0,#D0D0D0);border:1px solid #CCC}
 input[type="range"]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:
@@ -453,10 +477,12 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   radial-gradient(circle at 30% 30%, #fff 0%, #eee 40%, #ddd 75%, #ccc 100%); 
   border:1px solid #999;box-shadow:0 2px 6px rgba(0,0,0,.15)}
 
+/* Color picker - White BG */
 #colorPicker,#bgColor{width:100%;height:40px;border-radius:10px;border:2px solid #D0D0D0;background:#FFFFFF}
 .colorHistory{display:flex;gap:8px;flex-wrap:nowrap;margin-top:10px;overflow-x:hidden}
 .colorHistory button{width:24px;height:24px;border-radius:50%;border:2px solid #CCC;background:#222;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);flex:0 0 auto;}
 
+/* Grids */
 .grid{display:grid;gap:10px}
 .grid--font{grid-template-columns:repeat(2,1fr)}
 .grid--pattern{
@@ -466,6 +492,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   overflow-x: hidden;
 }
 
+/* NEW: Effect Grid */
 .grid--effect{grid-template-columns:repeat(4,1fr)}
 
 .fontBtn{height:40px;border-radius:10px;border:2px solid #D0D0D0;background:#FFFFFF;color:#333;text-transform:none;letter-spacing:.5px;cursor:pointer;transition:.14s}
@@ -513,7 +540,7 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
 ::-webkit-scrollbar-thumb{background:#CCC;border-radius:8px}
 ::-webkit-scrollbar-thumb:hover{background:#BBB}
 
-/* Utility Icons - Reverted filter to invert(0.8) as requested */
+/* Utility Icons - Dark Icons for Light BG */
 .panel > .utility-icons {
   display: flex;
   gap: 0px;
@@ -562,90 +589,4 @@ input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;b
   border-bottom: none;
   margin-bottom: 0;
   padding-bottom: 0;
-}
-
-/* =============================================
-   RESPONSIVE LAYOUT (MOBILE Only)
-   ============================================= */
-@media screen and (max-width: 1200px) {
-  /* PC Zoom 제거, Mobile Zoom 적용 (1로 설정하여 실제 크기로) */
-  body { zoom: 1; }
-
-  /* 세로 배치로 변경 */
-  .layout {
-    flex-direction: column;
-    height: auto; 
-    align-items: center;
-  }
-
-  /* 너비 자동 조절 (유동적) */
-  .work, .panel {
-    width: 100%;
-    min-width: 0;
-    flex: 0 0 auto;
-  }
-
-  /* 패널이 아래로 가도록 순서 변경 */
-  .panel {
-    order: 2;
-    max-height: none;
-    overflow: visible;
-  }
-  .work {
-    order: 1;
-  }
-
-  /* 캔버스 영역 반응형 */
-  .stage {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1400 / 800; /* 비율 유지 */
-    max-width: 100%;
-  }
-  
-  #mainCanvas {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* 캔버스 비율 유지 */
-  }
-
-  /* 독(Dock) 반응형 */
-  .dock {
-    width: 100%;
-    margin-top: 16px;
-    flex-wrap: wrap;
-    height: auto;
-    min-height: auto;
-    justify-content: center;
-  }
-  
-  .dock__list {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding-bottom: 10px;
-  }
-
-  /* 헤더 조정 */
-  .hdr {
-    padding: 8px 16px;
-    min-height: 60px;
-  }
-  .logo-link {
-    top: 8px;
-    left: 16px;
-  }
-  .logo-link img {
-    height: 50px;
-  }
-  .hdr__inner {
-    justify-content: flex-end;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .stage { padding: 10px; }
-  .dock { flex-direction: column; gap: 16px; }
-  .dock__left, .dock__right { width: 100%; justify-content: center; }
-  .dock__list { width: 100%; }
 }

@@ -1,7 +1,7 @@
 /* =====================================================
-   Typo Deco Studio — App (v12.11: Touch Support Added)
-   - ADDED: Touch event listeners mapped to mouse events.
-   - FIXED: Static GIFs issue remains fixed.
+   Typo Deco Studio — App (v12.9: Mosaic Effect)
+   - REPLACED: Bold effect with Mosaic.
+   - ADDED: createMosaicTexture to generate tile grid.
    ===================================================== */
 
 // ---------- DOM refs ----------
@@ -115,16 +115,8 @@ const stickerPacks = [
 ];
 
 const FONT_LIST = [
-  'Darling',
-  'bad_grunge', // Replaced CAMPUS_PERSONAL_USE
-  'mieszkanie9',
-  'freaksjow',  // Replaced White_On_Black
-  'built_titling_el_it',
-  'AngelicWar',
-  'HawaiiLover',
-  'Gothik_Steel',
-  'WordsTakenDemo',
-  'lowerResolution' // Replaced gomarice_bat_men
+  'Darling','CAMPUS_PERSONAL_USE','mieszkanie9','White_On_Black','built_titling_el_it','AngelicWar','HawaiiLover',
+  'Gothik_Steel','WordsTakenDemo','gomarice_bat_men'
 ];
 
 // ---------- Core Functions ----------
@@ -308,17 +300,20 @@ function createMetalTexture(w, h) {
   return c;
 }
 
-// Mosaic Texture
+// [New] Mosaic Texture
 function createMosaicTexture(w, h) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   const ctx = c.getContext('2d');
-  const tileSize = 8; 
+  const tileSize = 8; // Size of mosaic tiles
 
   for(let y=0; y<h; y+=tileSize) {
       for(let x=0; x<w; x+=tileSize) {
+          // Generate a random gray value
           const gray = Math.floor(Math.random() * 255);
           ctx.fillStyle = `rgb(${gray},${gray},${gray})`;
           ctx.fillRect(x, y, tileSize, tileSize);
+          
+          // Optional: Add faint border for tile separation
           ctx.strokeStyle = `rgba(0,0,0,0.1)`;
           ctx.strokeRect(x,y,tileSize,tileSize);
       }
@@ -502,7 +497,7 @@ function drawEffectBatch(ctx, indices, effectType, bounds, cx, cy, vOffset) {
     let texture = null;
     if(effectType === 'glitter') texture = createGlitterTexture(w, h);
     if(effectType === 'metal') texture = createMetalTexture(w, h);
-    if(effectType === 'mosaic') texture = createMosaicTexture(w, h); 
+    if(effectType === 'mosaic') texture = createMosaicTexture(w, h); // New Mosaic
 
     if(!texture) return;
 
@@ -523,7 +518,7 @@ function drawEffectBatch(ctx, indices, effectType, bounds, cx, cy, vOffset) {
         ctx.globalCompositeOperation = 'hard-light'; 
         ctx.globalAlpha = 1.0; 
     } else if (effectType === 'mosaic') {
-        ctx.globalCompositeOperation = 'overlay'; 
+        ctx.globalCompositeOperation = 'overlay'; // Mosaic Overlay
     } else if (effectType === 'glitter') {
         ctx.globalCompositeOperation = 'overlay';
         ctx.drawImage(comp, 0, 0, w, h);
@@ -758,23 +753,9 @@ function canvasPos(e) {
   const rect = canvas.getBoundingClientRect();
   const scaleX = (canvas.width / dpr) / rect.width;
   const scaleY = (canvas.height / dpr) / rect.height;
-  
-  // [MODIFIED] Handle both mouse and touch events
-  let clientX = e.clientX;
-  let clientY = e.clientY;
-  
-  if (e.touches && e.touches.length > 0) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-  } else if (e.changedTouches && e.changedTouches.length > 0) {
-      // For touchend
-      clientX = e.changedTouches[0].clientX;
-      clientY = e.changedTouches[0].clientY;
-  }
-
   return { 
-      x: (clientX - rect.left) * scaleX, 
-      y: (clientY - rect.top) * scaleY 
+      x: (e.clientX - rect.left) * scaleX, 
+      y: (e.clientY - rect.top) * scaleY 
   };
 }
 
@@ -841,7 +822,7 @@ function hitGlyph(mx,my){
   return -1;
 }
 
-// ---------- Events (Touch Support Added) ----------
+// ---------- Events ----------
 function bindEvents(){
   inputText.addEventListener('input', e=>{ textString = inputText.value; updateCount(); layoutText(); selection.clear(); render(); });
   sizeRange.addEventListener('input', ()=>{ const v=Number(sizeRange.value); if(selection.size) selection.forEach(i=>textChars[i].size=v); else { base.size=v; textChars.forEach(g=>g.size=v); } layoutText(); render(); });
@@ -947,11 +928,7 @@ function bindEvents(){
       }
   });
 
-  // [MODIFIED] Consolidated event handler for start (mouse/touch)
-  const handleStart = (e) => {
-      // Prevent default scrolling only if touching canvas directly (not for UI)
-      if(e.type === 'touchstart') e.preventDefault(); 
-      
+  canvas.addEventListener('mousedown', e => {
       const pos = canvasPos(e);
       stickerMode = 'none';
 
@@ -975,13 +952,10 @@ function bindEvents(){
           render(); return;
       }
       selection.clear(); activeSticker = -1; render();
-  };
+  });
 
-  // [MODIFIED] Consolidated event handler for move (mouse/touch)
-  const handleMove = (e) => {
+  window.addEventListener('mousemove', e => {
       if(activeSticker === -1 || stickerMode === 'none') return;
-      if(e.type === 'touchmove') e.preventDefault(); // Prevent scrolling while dragging
-
       const pos = canvasPos(e);
       const s = stickers[activeSticker];
       if(stickerMode === 'drag') { s.x = pos.x - dragOffset.x; s.y = pos.y - dragOffset.y; }
@@ -997,22 +971,11 @@ function bindEvents(){
           s.rot = (startRot + (ang - startAngle) + 360) % 360;
       }
       render();
-      if(e.type === 'mousemove') updateCursor(s, pos);
-  };
+      updateCursor(s, pos);
+  });
 
-  const handleEnd = () => { stickerMode = 'none'; canvas.style.cursor = 'default'; };
-
-  // Mouse Listeners
-  canvas.addEventListener('mousedown', handleStart);
-  window.addEventListener('mousemove', handleMove);
-  window.addEventListener('mouseup', handleEnd);
-
-  // [ADDED] Touch Listeners
-  canvas.addEventListener('touchstart', handleStart, { passive: false });
-  window.addEventListener('touchmove', handleMove, { passive: false });
-  window.addEventListener('touchend', handleEnd);
+  window.addEventListener('mouseup', () => { stickerMode = 'none'; canvas.style.cursor = 'default'; });
   
-  // Cursor updates for mouse hover
   canvas.addEventListener('mousemove', e => {
       if(stickerMode !== 'none') return;
       const pos = canvasPos(e);
