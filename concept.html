@@ -1,12 +1,14 @@
-<!-- concept.html (Concept select with Heaven white fade, logo → index.html, responsive) -->
+<!-- concept.html (Responsive & Touch Swipe Enabled) -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- 모바일 확대/축소 방지 및 뷰포트 설정 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Concept Select</title>
   <style>
     :root{
+      /* PC 기본 설정 */
       --card-size: min(44vw, 310px);
       --side-scale: 0.78;
       --gap: min(18vw, 220px);
@@ -17,9 +19,12 @@
     }
 
     *{ box-sizing:border-box; }
+    
     body{
       margin:0;
-      height:100vh;
+      /* dvh를 지원하는 브라우저는 동적 높이 사용, 아니면 100vh */
+      height: 100vh;
+      height: 100dvh;
       display:grid;
       place-items:center;
       background:
@@ -29,9 +34,10 @@
       animation: bgFlow 8s linear infinite;
       color:#fff;
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      overflow:hidden;
+      overflow:hidden; /* 스크롤 방지 */
       position: relative;
       transition: background 320ms ease;
+      touch-action: pan-y; /* 가로 스와이프 간섭 방지 */
     }
 
     /* 배경 도트 */
@@ -61,7 +67,7 @@
       100%{ background-position: -80px 60px, 100px 120px; }
     }
 
-    /* 컨셉별 배경 톤 */
+    /* 테마별 배경 */
     body.theme-glam{
       background:
         radial-gradient(900px circle at 50% 45%, #777777 0%, #4f4f4f 32%, #363636 62%, #232323 82%, #191919 100%),
@@ -83,7 +89,7 @@
       background-size: 100% 100%, 100% 100%, 100% 100%;
     }
 
-    /* 좌상단 로고 */
+    /* 로고 */
     .logo-link{
       position:fixed;
       top:16px;
@@ -95,6 +101,7 @@
       height:80px;
       width:auto;
       display:block;
+      transition: height 0.3s ease; /* 부드러운 리사이징 */
     }
 
     .stage{
@@ -105,6 +112,8 @@
       display:grid;
       place-items:center;
       transition: transform 900ms var(--ease), filter 900ms var(--ease);
+      /* 모바일 터치 영역 확보 */
+      touch-action: none; 
     }
 
     body.fade-out .stage{
@@ -128,20 +137,13 @@
       height: var(--card-size);
       border-radius: var(--radius);
       overflow:hidden;
-      cursor: default;
+      cursor: pointer;
       user-select:none;
+      -webkit-user-drag: none; /* 이미지 드래그 방지 */
       isolation: isolate;
       background:
         radial-gradient(120% 120% at 10% 0%, #ffffff38, transparent 45%),
-        linear-gradient(135deg,
-          #060606 0%,
-          #1a1a1a 10%,
-          #3f3f3f 22%,
-          #bdbdbd 34%,
-          #f3f3f3 40%,
-          #8a8a8a 54%,
-          #2a2a2a 66%,
-          #0a0a0a 100%);
+        linear-gradient(135deg, #060606 0%, #1a1a1a 10%, #3f3f3f 22%, #bdbdbd 34%, #f3f3f3 40%, #8a8a8a 54%, #2a2a2a 66%, #0a0a0a 100%);
       box-shadow:
         inset 0 0 0 1px #ffffff10,
         inset 0 22px 40px #ffffff12;
@@ -158,20 +160,11 @@
       inset:0;
       border-radius: var(--radius);
       padding: 2px;
-      background:
-        linear-gradient(145deg,
-          #ffffff 0%,
-          #d9d9d9 18%,
-          #7a7a7a 40%,
-          #222222 62%,
-          #f8f8f8 100%);
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
+      background: linear-gradient(145deg, #ffffff 0%, #d9d9d9 18%, #7a7a7a 40%, #222222 62%, #f8f8f8 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events:none;
-      opacity: 1;
       z-index: 3;
       filter: drop-shadow(0 0 6px #ffffff35);
     }
@@ -222,6 +215,7 @@
       white-space:nowrap;
       z-index:20;
       pointer-events:none;
+      transition: top 0.3s ease;
     }
 
     .pos-center{
@@ -234,25 +228,20 @@
         0 70px 80px -50px #00000080,
         0 0 0 1px #ffffff38,
         inset 0 0 0 1px #ffffff24;
-      cursor:pointer;
     }
     .pos-left{
       transform: translateX(calc(-1 * var(--gap))) translateZ(0) scale(var(--side-scale)) rotateY(18deg);
       z-index:1;
       opacity:0.9;
       filter:saturate(0.9) brightness(0.9);
-      box-shadow:
-        0 18px 55px #000a,
-        0 60px 70px -55px #00000070;
+      box-shadow: 0 18px 55px #000a;
     }
     .pos-right{
       transform: translateX(var(--gap)) translateZ(0) scale(var(--side-scale)) rotateY(-18deg);
       z-index:1;
       opacity:0.9;
       filter:saturate(0.9) brightness(0.9);
-      box-shadow:
-        0 18px 55px #000a,
-        0 60px 70px -55px #00000070;
+      box-shadow: 0 18px 55px #000a;
     }
 
     .card.is-clicking{ animation: clickPop 420ms var(--ease); }
@@ -277,11 +266,16 @@
       padding: 0;
       filter: drop-shadow(0 10px 18px #000);
       transition: transform 200ms ease, filter 200ms ease;
+      /* 모바일 탭 영역 확대 */
+      touch-action: manipulation;
     }
     .arrow.left{ left: clamp(8px, 2vw, 22px); }
     .arrow.right{ right: clamp(8px, 2vw, 22px); }
     .arrow svg{ width:100%; height:100%; display:block; }
-    .arrow:hover{ filter: drop-shadow(0 12px 20px #000) brightness(1.08); transform:translateY(-50%) scale(1.05); }
+    
+    @media (hover: hover) {
+      .arrow:hover{ filter: drop-shadow(0 12px 20px #000) brightness(1.08); transform:translateY(-50%) scale(1.05); }
+    }
     .arrow:active{ transform:translateY(-50%) scale(0.95); }
 
     .glow{
@@ -319,7 +313,6 @@
       transition: transform 900ms var(--ease), opacity 900ms var(--ease);
       z-index:999;
     }
-
     .screen-fade::after{
       content:"";
       position:absolute;
@@ -330,78 +323,61 @@
       transition: opacity 450ms var(--ease) 450ms;
     }
 
-    body.fade-out .screen-fade{
-      opacity:1;
-      transform:translate(-50%, -50%) scale(4.5);
-    }
+    body.fade-out .screen-fade{ opacity:1; transform:translate(-50%, -50%) scale(4.5); }
+    body.fade-out .screen-fade::after{ opacity:1; }
 
-    body.fade-out .screen-fade::after{
-      opacity:1;
-    }
-
-    /* Heaven일 때만 흰색 플래시로 오버라이드 */
     body.heaven-fade .screen-fade{
-      background:radial-gradient(circle at center,
-        rgba(255,255,255,0.25) 0%,
-        rgba(255,255,255,0.7) 38%,
-        rgba(255,255,255,0.95) 72%,
-        #ffffff 100%);
+      background:radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.7) 38%, rgba(255,255,255,0.95) 72%, #ffffff 100%);
     }
-
-    body.heaven-fade .screen-fade::after{
-      background:#ffffff;
-    }
+    body.heaven-fade .screen-fade::after{ background:#ffffff; }
 
     /* --------- 모바일 반응형 (휴대폰 비율용) --------- */
     @media (max-width: 768px){
       :root{
-        --card-size: min(70vw, 260px);
-        --side-scale: 0.8;
-        --gap: 140px;
-        --arrow-w: clamp(28px, 8vw, 40px);
-        --arrow-h: clamp(70px, 20vw, 100px);
+        /* 모바일에서 카드 크기를 화면 비율에 맞춰 더 시원하게 */
+        --card-size: min(75vw, 280px);
+        --side-scale: 0.82;
+        /* 카드 간격을 화면 너비 비례로 유동적으로 조정 */
+        --gap: 35vw; 
+        --arrow-w: 32px;
+        --arrow-h: 80px;
       }
 
-      body{
-        overflow:hidden;
+      .logo-link {
+        top: 12px;
+        left: 16px;
+      }
+      .logo-link img{
+        height: 50px; /* 로고 사이즈 축소 */
       }
 
       .stage{
-        width:100vw;
-        height:100vh;
+        width:100%;
+        height:100%;
       }
 
-      .glow{
-        width: min(80vw, 420px);
-        height: min(80vw, 420px);
-      }
-
-      .logo-link img{
-        height:60px;
-      }
-
+      /* 모바일에서는 라벨을 카드에 좀 더 붙임 */
       .center-label{
-        top: calc(50% + (var(--card-size) / 2) + 22px);
-        font-size: 13px;
-        letter-spacing:0.16em;
+        top: calc(50% + (var(--card-size) / 2) + 24px);
+        font-size: 15px;
+        letter-spacing:0.15em;
       }
 
-      .arrow.left{ left: 6px; }
-      .arrow.right{ right: 6px; }
+      .arrow{ display: none; /* 모바일에서는 스와이프로 대체하여 깔끔하게 (선택사항, 원하면 주석 해제) */ }
+      
+      /* 만약 화살표를 모바일에서도 쓰고 싶다면 아래 주석을 해제하세요 */
+      /*
+      .arrow { display: grid; opacity: 0.6; }
+      .arrow.left{ left: 4px; }
+      .arrow.right{ right: 4px; }
+      */
 
       .pos-left{
-        transform: translateX(calc(-1 * var(--gap))) translateZ(0) scale(var(--side-scale)) rotateY(14deg);
+        /* 모바일에서는 각도를 줄여서 덜 왜곡되게 */
+        transform: translateX(calc(-1 * var(--gap))) translateZ(-20px) scale(var(--side-scale)) rotateY(10deg);
       }
       .pos-right{
-        transform: translateX(var(--gap)) translateZ(0) scale(var(--side-scale)) rotateY(-14deg);
-      }
-    }
-
-    /* 기존 520px 이하 미세 조정 유지 */
-    @media (max-width: 520px){
-      :root{ --gap: 150px; }
-      .center-label{
-        top: calc(50% + (var(--card-size) / 2) + 26px);
+        transform: translateX(var(--gap)) translateZ(-20px) scale(var(--side-scale)) rotateY(-10deg);
       }
     }
   </style>
@@ -410,21 +386,23 @@
   <div class="bg-dots"></div>
 
   <a href="index.html" class="logo-link">
-    <img src="logo.png" alt="Logo">
+    <!-- 플레이스홀더 이미지 (실제 logo.png가 있다면 그대로 사용) -->
+    <img src="logo.png" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNTAiPjx0ZXh0IHk9IjM1IiBmb250LXNpemU9IjMwIiBmaWxsPSJ3aGl0ZSI+TE9HTzwvdGV4dD48L3N2Zz4='" alt="Logo">
   </a>
 
-  <div class="stage">
+  <!-- 터치 이벤트를 감지할 영역 -->
+  <div class="stage" id="stage">
     <div class="glow"></div>
 
     <div class="track" id="track">
       <div class="card" data-index="0" data-name="Glam">
-        <img src="cs1.png" alt="Glam concept">
+        <img src="cs1.png" onerror="this.style.background='#333'" alt="Glam concept">
       </div>
       <div class="card" data-index="1" data-name="Heaven">
-        <img src="cs2.png" alt="Heaven concept">
+        <img src="cs2.png" onerror="this.style.background='#555'" alt="Heaven concept">
       </div>
       <div class="card" data-index="2" data-name="Pop">
-        <img src="cs3.png" alt="Pop concept">
+        <img src="cs3.png" onerror="this.style.background='#777'" alt="Pop concept">
       </div>
     </div>
 
@@ -472,6 +450,7 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const centerLabel = document.getElementById("centerLabel");
+    const stage = document.getElementById("stage");
 
     const names = ["Glam", "Heaven", "Pop"];
     let current = 0;
@@ -492,6 +471,9 @@
         card.classList.remove("pos-left","pos-center","pos-right");
         card.style.pointerEvents = "none";
         card.style.opacity = 1;
+        // 초기화
+        card.style.transform = ""; 
+        card.style.zIndex = "";
 
         if(i === current){
           card.classList.add("pos-center");
@@ -515,12 +497,42 @@
       render();
     }
 
+    // --- [추가] 모바일 터치 스와이프 로직 ---
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 40; // 스와이프 인식 최소 거리
+
+    stage.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    stage.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+      const distance = touchEndX - touchStartX;
+      if (Math.abs(distance) < minSwipeDistance) return;
+
+      if (distance < 0) {
+        // 왼쪽으로 밀기 -> 다음 슬라이드
+        move(1);
+      } else {
+        // 오른쪽으로 밀기 -> 이전 슬라이드
+        move(-1);
+      }
+    }
+
+    // --- 스파크 효과 (모바일 성능 최적화: 개수 제한) ---
     const sparkCanvas = document.getElementById("sparkCanvas");
     const sctx = sparkCanvas.getContext("2d");
     let sparks = [];
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
-    const maxSparks = 160;
+    // 모바일인지 확인하여 파티클 수 조절
+    const isMobile = window.innerWidth < 768;
+    const maxSparks = isMobile ? 60 : 160; 
 
     function resizeSpark(){
       sparkCanvas.width  = window.innerWidth;
@@ -529,16 +541,17 @@
     resizeSpark();
     window.addEventListener("resize", resizeSpark);
 
-    window.addEventListener("mousemove", (e)=>{
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      for(let i=0; i<6; i++){
+    // PC: 마우스 이동, 모바일: 터치 이동에 반응
+    function addSparks(x, y) {
+      // 한 번에 생성되는 스파크 수 조절
+      const count = isMobile ? 2 : 5;
+      for(let i=0; i<count; i++){
         if(sparks.length > maxSparks) sparks.shift();
         const angle = Math.random() * Math.PI * 2;
         const speed = Math.random() * 0.6 + 0.15;
         sparks.push({
-          x: mouseX + (Math.random()-0.5) * 12,
-          y: mouseY + (Math.random()-0.5) * 12,
+          x: x + (Math.random()-0.5) * 12,
+          y: y + (Math.random()-0.5) * 12,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: 1,
@@ -548,7 +561,18 @@
           rotSpeed: (Math.random() - 0.5) * 0.12
         });
       }
+    }
+
+    window.addEventListener("mousemove", (e)=>{
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      addSparks(mouseX, mouseY);
     });
+
+    window.addEventListener("touchmove", (e)=>{
+      const t = e.touches[0];
+      addSparks(t.clientX, t.clientY);
+    }, {passive: true});
 
     function drawSparks(){
       sctx.clearRect(0,0,sparkCanvas.width,sparkCanvas.height);
@@ -598,10 +622,17 @@
     cards.forEach(card => {
       card.addEventListener("click", () => {
         const idx = Number(card.dataset.index);
-        if(idx !== current) return;
+        
+        // 현재 카드가 아니면 해당 카드로 이동만 하고 클릭 액션은 안함
+        if(idx !== current) {
+          // 거리 계산해서 방향 결정 (간단히)
+          if( idx === mod(current + 1, cards.length) ) move(1);
+          else move(-1);
+          return;
+        }
 
+        // 현재 카드 클릭 시 페이지 이동 애니메이션
         card.classList.add("is-clicking");
-
         const name = card.dataset.name.toLowerCase();
 
         document.body.classList.add("fade-out");
